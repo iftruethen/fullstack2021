@@ -8,6 +8,22 @@ const Nappi = ({ text,handler }) => {
   )
 }
 
+const Statistics = ({good,bad,neutral}) => {
+  return (
+    <>
+      <>neutral {neutral}</>
+      <br />
+      <>bad {bad}</>
+      <br />
+      <>all {bad+good+neutral}</>
+      <br />
+      <>average {(good-bad)/(bad+good+neutral)}</>
+      <br />
+      <>positive {(good)/(bad+good+neutral)*100} %</>
+    </>
+  )
+}
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -27,15 +43,7 @@ const App = () => {
       <h1>statistics</h1>
       <>good {good}</>
       <br />
-      <>neutral {neutral}</>
-      <br />
-      <>bad {bad}</>
-      <br />
-      <>all {bad+good+neutral}</>
-      <br />
-      <>average {(good-bad)/(bad+good+neutral)}</>
-      <br />
-      <>positive {(good)/(bad+good+neutral)*100} %</>
+      <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   )
 }

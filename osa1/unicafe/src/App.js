@@ -9,8 +9,17 @@ const Nappi = ({ text,handler }) => {
 }
 
 const Statistics = ({good,bad,neutral}) => {
+  if (good+bad+neutral <= 0) {
+    return(
+      <>
+        No feedback given
+      </>
+    )
+  }
   return (
     <>
+      <>good {good}</>
+      <br />
       <>neutral {neutral}</>
       <br />
       <>bad {bad}</>
@@ -41,8 +50,6 @@ const App = () => {
       <Nappi text="neutral" handler={NeutralHandler} />
       <Nappi text="bad" handler={BadHandler} />
       <h1>statistics</h1>
-      <>good {good}</>
-      <br />
       <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   )

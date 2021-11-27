@@ -1,10 +1,27 @@
 import React, { useState } from 'react'
 
-const Nappi = ({ text,handler }) => {
+const Button = ({ text,handler }) => {
   return(
     <button onClick={handler}>
       {text}
     </button>
+  )
+}
+
+const StatisticLine = ({text,value}) => {
+  if (text === "positive") {
+    return (
+      <>
+        <>{text} {value} %</>
+        <br />
+      </>
+    )
+  }
+  return (
+    <>
+      <>{text} {value}</>
+      <br />
+    </>
   )
 }
 
@@ -18,17 +35,12 @@ const Statistics = ({good,bad,neutral}) => {
   }
   return (
     <>
-      <>good {good}</>
-      <br />
-      <>neutral {neutral}</>
-      <br />
-      <>bad {bad}</>
-      <br />
-      <>all {bad+good+neutral}</>
-      <br />
-      <>average {(good-bad)/(bad+good+neutral)}</>
-      <br />
-      <>positive {(good)/(bad+good+neutral)*100} %</>
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="all" value={good+bad+neutral} />
+      <StatisticLine text="average" value={(good-bad)/(bad+good+neutral)} />
+      <StatisticLine text="positive" value={(good)/(bad+good+neutral)*100} />
     </>
   )
 }
@@ -46,9 +58,9 @@ const App = () => {
   return (
     <div>
       <h1>give feedback</h1>
-      <Nappi text="good" handler={GoodHandler} />
-      <Nappi text="neutral" handler={NeutralHandler} />
-      <Nappi text="bad" handler={BadHandler} />
+      <Button text="good" handler={GoodHandler} />
+      <Button text="neutral" handler={NeutralHandler} />
+      <Button text="bad" handler={BadHandler} />
       <h1>statistics</h1>
       <Statistics good={good} bad={bad} neutral={neutral} />
     </div>

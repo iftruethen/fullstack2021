@@ -26,13 +26,6 @@ const StatisticLine = ({text,value}) => {
 }
 
 const Statistics = ({good,bad,neutral}) => {
-  if (good+bad+neutral <= 0) {
-    return(
-      <>
-        No feedback given
-      </>
-    )
-  }
   return (
     <>
       <StatisticLine text="good" value={good} />
@@ -62,6 +55,8 @@ const App = () => {
       <Button text="neutral" handler={NeutralHandler} />
       <Button text="bad" handler={BadHandler} />
       <h1>statistics</h1>
+      <>good {good}</>
+      <br />
       <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   )

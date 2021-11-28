@@ -23,22 +23,32 @@ const App = () => {
 
   const [votes, setVotes] = useState([0,0,0,0,0,0,0])
 
+  const [best, setBest] = useState({votes: 0, anecdote_index: 0})
+
   const handleClick = () => setSelected(Math.floor(Math.random() * anecdotes.length))
 
   const handleVote = () => {
     let i = [...votes]
     i[selected] = i[selected] + 1
     setVotes(i)
+    if (i[selected] > best.votes) {
+      setBest({votes:i[selected],anecdote_index:selected})
+    }
   }
-  
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <br/>
       has {votes[selected]} votes
       <br/>
       <Button text="vote" handler={handleVote} />
       <Button text="next anecdote" handler={handleClick} />
+      <h1>Anecdote with the most votes</h1>
+      {anecdotes[best.anecdote_index]}
+      <br/>
+      has {votes[best.anecdote_index]} votes
     </div>
   )
 }

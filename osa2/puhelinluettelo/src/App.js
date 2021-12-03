@@ -1,7 +1,25 @@
 import React, { useState } from 'react'
 
-// const Names = ({persons}) => persons.map(person => <p key={person.name}>{person.name} {person.number}</p>)
-const Names = ({persons,searchTerm}) => persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())).map(person => <p key={person.name}>{person.name} {person.number}</p>)
+const Persons = ({persons,searchTerm}) => persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())).map(person => <p key={person.name}>{person.name} {person.number}</p>)
+
+const Filter = ({searchTerm,handleSearchTermChange}) => (
+  <div>
+    filter shown with <input value={searchTerm} onChange={handleSearchTermChange} />
+  </div>
+)
+
+const PersonForm = ({addNew,newName,newNumber,handleChange,handeNumberchange}) => (
+  <form onSubmit={addNew}>
+    <div>
+      name: <input value={newName} onChange={handleChange}/>
+      <br/>
+      number: <input value={newNumber} onChange={handeNumberchange} />
+    </div>
+    <div>
+      <button type="submit">add</button>
+    </div>
+  </form>
+)
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -32,22 +50,17 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>
-        filter shown with <input value={searchTerm} onChange={handleSearchTermChange} />
-      </div>
+
+      <Filter searchTerm={searchTerm} handleSearchTermChange={handleSearchTermChange} />
+
       <h2>add a new</h2>
-      <form onSubmit={addNew}>
-        <div>
-          name: <input value={newName} onChange={handleChange}/>
-          <br/>
-          number: <input value={newNumber} onChange={handeNumberchange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
+      <PersonForm addNew={addNew} newName={newName} newNumber={newNumber} 
+      handleChange={handleChange} handeNumberchange={handeNumberchange} />
+
       <h2>Numbers</h2>
-      <Names persons={persons} searchTerm={searchTerm} />
+
+      <Persons persons={persons} searchTerm={searchTerm} />
     </div>
   )
 

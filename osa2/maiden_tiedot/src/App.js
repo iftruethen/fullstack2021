@@ -3,7 +3,6 @@ import axios from 'axios'
 
 const Search_form = ({catcher,searchWord}) => {
   return (
-    // <form onChange={} >
     <form >
       <label>find countries</label>
       <input value={searchWord} onChange={catcher}/>
@@ -11,13 +10,43 @@ const Search_form = ({catcher,searchWord}) => {
   )
 }
 
-// käytetty taulukon indeksejä avaimina, huono käytäntö, mutta
-// rajapinta ei tarjoa elementeille identifiereitä natiivisti
-const Countries = ({countries}) => countries.map((country,i) => {
-  return <Country key={i} country={country} />
-})
+const Countries = ({countries,searchWord,i}) => {
+  const filtered = countries.filter(country => country.name.common.toLowerCase()
+  .includes(searchWord.toLowerCase()))
 
-const Country = ({country}) => <div><>{country.name.common}</><br/></div>
+  if (filtered.length > 10) {
+    return <div>Too many matched, specify another filter</div>
+  } else if (filtered.length > 1) {
+    return filtered.map(country => <div key={country.name.common}><Country country={country} show_details={false} /></div>)
+  } else if (filtered.length < 1) {
+    return <div>No results found to match your search</div>
+  }
+  console.log("nyt pitäisi näyttää yksi")
+  return filtered.map(country => <div key={country.name.common}><Country country={country} show_details={true} /></div>)
+}
+
+const List_languages = ({languages}) => languages.map((language,i) => <li key={i}>{language}</li>)
+
+const Country = ({country,show_details}) => {
+  console.log(Object.values(country.languages))
+  if (!show_details) {
+    return <div><>{country.name.common}</><br/></div>
+  } else {
+    return (
+      <div>
+        <h1>{country.name.common}</h1>
+        <>capital {country.capital[0]}</><br/>
+        <>population {country.population}</><br/>
+        <h2>languages</h2>
+        <ul>
+          <List_languages languages={Object.values(country.languages)} />
+        </ul>
+        <img src={country.flags.png} width="10%" height="10%" />
+      </div>
+      
+    )
+  }
+}
 
 const App = () => {
   const [countries,setCountries] = useState([])
@@ -25,7 +54,6 @@ const App = () => {
 
   const catchChange = (event) => {
     setSearchWord(event.target.value)
-    console.log({searchWord})
   }
 
   useEffect(() => {
@@ -42,7 +70,7 @@ const App = () => {
   return (
     <div>
       <Search_form catcher={catchChange} searchWord={searchWord}/>
-      <Countries countries={countries} />
+      <Countries countries={countries} searchWord={searchWord}/>
     </div>
   )
 }

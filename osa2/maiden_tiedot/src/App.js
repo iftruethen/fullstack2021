@@ -10,14 +10,14 @@ const Search_form = ({catcher,searchWord}) => {
   )
 }
 
-const Countries = ({countries,searchWord,i}) => {
+const Countries = ({countries,searchWord,clickHandler}) => {
   const filtered = countries.filter(country => country.name.common.toLowerCase()
   .includes(searchWord.toLowerCase()))
 
   if (filtered.length > 10) {
     return <div>Too many matched, specify another filter</div>
   } else if (filtered.length > 1) {
-    return filtered.map(country => <div key={country.name.common}><Country country={country} show_details={false} /></div>)
+    return filtered.map(country => <div key={country.name.common}><Country country={country} show_details={false} clickHandler={clickHandler} /></div>)
   } else if (filtered.length < 1) {
     return <div>No results found to match your search</div>
   }
@@ -26,9 +26,9 @@ const Countries = ({countries,searchWord,i}) => {
 
 const List_languages = ({languages}) => languages.map((language,i) => <li key={i}>{language}</li>)
 
-const Country = ({country,show_details}) => {
+const Country = ({country,show_details,clickHandler}) => {
   if (!show_details) {
-    return <div><>{country.name.common}</><br/></div>
+    return <div><>{country.name.common}</><button value={country.name.common} onClick={clickHandler}>show</button><br/></div>
   } else {
     return (
       <div>
@@ -65,7 +65,7 @@ const App = () => {
   return (
     <div>
       <Search_form catcher={catchChange} searchWord={searchWord}/>
-      <Countries countries={countries} searchWord={searchWord}/>
+      <Countries countries={countries} searchWord={searchWord} clickHandler={catchChange} />
     </div>
   )
 }

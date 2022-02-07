@@ -21,14 +21,12 @@ const Countries = ({countries,searchWord,i}) => {
   } else if (filtered.length < 1) {
     return <div>No results found to match your search</div>
   }
-  console.log("nyt pitäisi näyttää yksi")
   return filtered.map(country => <div key={country.name.common}><Country country={country} show_details={true} /></div>)
 }
 
 const List_languages = ({languages}) => languages.map((language,i) => <li key={i}>{language}</li>)
 
 const Country = ({country,show_details}) => {
-  console.log(Object.values(country.languages))
   if (!show_details) {
     return <div><>{country.name.common}</><br/></div>
   } else {
@@ -60,12 +58,9 @@ const App = () => {
     axios
       .get("https://restcountries.com/v3.1/all")
       .then(data => {
-        // console.log(data.data)
         setCountries(data.data)
       })
   },[])
-
-  // console.log(countries)
 
   return (
     <div>

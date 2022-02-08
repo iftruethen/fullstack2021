@@ -27,19 +27,16 @@ const Countries = ({countries,searchWord,clickHandler}) => {
 const ListLanguages = ({languages}) => languages.map((language,i) => <li key={i}>{language}</li>)
 
 const Weather = ({city}) => {
-  const [weather,setWeater] = useState(" ")
+  const [weather,setWeater] = useState()
   const api_key = process.env.REACT_APP_API_KEY
   const api_url = "http://api.weatherstack.com/current?access_key=" + api_key + "&query=" + city
   
   useEffect(() => {
-    axios.get("http://api.weatherstack.com/current?access_key=" + api_key + "&query=" + city)
+    axios.get(api_url)
     .then(data => setWeater(data.data))
   },[])
 
-  console.log(weather)
-  console.log(weather.current.wind_speed)
-
-  if (weather == " ") {return <></>}
+  if (weather===undefined) {return <div><h2>Weather in {city}</h2><p>loading weather data...</p></div>}
   return (
     <div>
       <h2>Weather in {city}</h2>

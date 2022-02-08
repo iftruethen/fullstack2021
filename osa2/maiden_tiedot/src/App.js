@@ -1,7 +1,7 @@
 import React,{ useState,useEffect } from 'react'
 import axios from 'axios'
 
-const Search_form = ({catcher,searchWord}) => {
+const SearchForm = ({catcher,searchWord}) => {
   return (
     <form >
       <label>find countries</label>
@@ -24,7 +24,32 @@ const Countries = ({countries,searchWord,clickHandler}) => {
   return filtered.map(country => <div key={country.name.common}><Country country={country} show_details={true} /></div>)
 }
 
-const List_languages = ({languages}) => languages.map((language,i) => <li key={i}>{language}</li>)
+const ListLanguages = ({languages}) => languages.map((language,i) => <li key={i}>{language}</li>)
+
+const Weather = ({city}) => {
+  const [weather,setWeater] = useState(" ")
+  const api_key = process.env.REACT_APP_API_KEY
+  const api_url = "http://api.weatherstack.com/current?access_key=" + api_key + "&query=" + city
+  
+  useEffect(() => {
+    axios.get("http://api.weatherstack.com/current?access_key=" + api_key + "&query=" + city)
+    .then(data => setWeater(data.data))
+  },[])
+
+  console.log(weather)
+  console.log(weather.current.wind_speed)
+
+  if (weather == " ") {return <></>}
+  return (
+    <div>
+      <h2>Weather in {city}</h2>
+      <><b>temperature:</b> {weather.current.temperature} Celsius <br/></>
+      <img src={weather.current.weather_icons[0]} alt=""></img><br/>
+      <><b>wind:</b> {weather.current.wind_speed} mph direction {weather.current.wind_dir} </>
+    </div>
+  )
+}
+
 
 const Country = ({country,show_details,clickHandler}) => {
   if (!show_details) {
@@ -35,11 +60,12 @@ const Country = ({country,show_details,clickHandler}) => {
         <h1>{country.name.common}</h1>
         <>capital {country.capital[0]}</><br/>
         <>population {country.population}</><br/>
-        <h2>languages</h2>
+        <h2>Spoken languages</h2>
         <ul>
-          <List_languages languages={Object.values(country.languages)} />
+          <ListLanguages languages={Object.values(country.languages)} />
         </ul>
-        <img src={country.flags.png} width="10%" height="10%" />
+        <img src={country.flags.png} width="10%" height="10%" alt="" />
+        <Weather city={country.capital[0]} />
       </div>
       
     )
@@ -64,7 +90,7 @@ const App = () => {
 
   return (
     <div>
-      <Search_form catcher={catchChange} searchWord={searchWord}/>
+      <SearchForm catcher={catchChange} searchWord={searchWord}/>
       <Countries countries={countries} searchWord={searchWord} clickHandler={catchChange} />
     </div>
   )
